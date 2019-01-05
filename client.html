@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+</head>
+
+<body>
+
+<h1>Socket Client</h1>
+
+<!--
+Open a Socket to the socket server and supply a GUID for connection
+
+Send & Recieve
+
+-->
+
+
+<div id="messages"></div>
+
+
+<script>
+
+// https://www.html5rocks.com/en/tutorials/websockets/basics/
+
+const server_address = 'ws://html5rocks.websocket.org/echo';
+
+const connection = new WebSocket(server_address, ['soap', 'xmpp']);
+
+// When the connection is open, send some data to the server
+connection.onopen = function () {
+   // Send the message 'Ping' to the server
+   send("ping");
+};
+
+// Log errors
+connection.onerror = onError;
+
+// Log messages from the server
+connection.onmessage = onRecieve;
+
+function send(data) {
+    const message = "Send: " + data;
+    logMessage(message);
+
+    connection.send(data);
+}
+
+function onRecieve(e) {
+    const message = 'Recieve: ' + e.data;
+    logMessage(message);
+}
+
+function onError(error) { 
+    const message = 'WebSocket Error ' + error;
+    logMessage(message);
+}
+
+
+function logMessage(message) {
+    console.log(message);
+
+
+    const messages = document.getElementById("messages");
+    
+    const node = document.createElement("p");                 // Create a <li> node
+    const textnode = document.createTextNode(message);         // Create a text node
+    node.appendChild(textnode);                              // Append the text to <li>
+
+    messages.appendChild(node);
+}
+
+</script>
+
+</body>
+</html>
