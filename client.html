@@ -14,12 +14,35 @@ Open a Socket to the socket server and supply a GUID for connection
 Send & Recieve
 
 -->
+Command:
+<input type="text" id="send_message_command">
+Data:
+<input type="text" id="send_message_data">
+<button type="button" onclick="onSendMessage();"> Send </button>
 
-
-<div id="messages"></div>
-
+<div>
+    Messages:
+    <div id="messages"></div>
+</div>
 
 <script>
+
+// Page Controls
+
+function onSendMessage() {
+    const command = document.getElementById("send_message_command").value;
+    const data = document.getElementById("send_message_data").value;
+
+    const message = JSON.stringify({"command": command, "data": data});
+
+    send(message);
+}
+
+
+
+
+// Socket Controls
+
 
 // https://www.html5rocks.com/en/tutorials/websockets/basics/
 
@@ -31,7 +54,8 @@ const connection = new WebSocket(server_address, ['soap', 'xmpp']);
 // When the connection is open, send some data to the server
 connection.onopen = function () {
    // Send the message 'Ping' to the server
-   send("ping");
+   //send("ping");
+   logMessage("Connected!");
 };
 
 // Log errors
